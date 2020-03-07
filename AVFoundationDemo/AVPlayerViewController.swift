@@ -22,17 +22,17 @@ class AVPlayerViewController: UIViewController {
         
         self.videoPlayBGView.backgroundColor = UIColor.lightGray
 
-        guard let url = URL.init(string: "http://ouprdwinp.bkt.clouddn.com/%E6%B5%B7%E8%B4%BC%E7%8E%8B%E7%B2%BE%E5%BD%A9%E5%89%AA%E8%BE%91.mp4") else {
-            assertionFailure("url 有问题！")
+        guard let url = URL.init(string: "https://dev-us-east-1-cubi-platform-storage.s3.amazonaws.com/us-east-1/public/5A9m3q1K3Nxd/us-east-1%3A85e5f5d0-82ac-4bb0-83d9-443e95661a83/4rpkGlGNzRoZ/LIVE/master.m3u8") else {
+            assertionFailure("url is not valid！")
             return
         }
         let playerItem = AVPlayerItem.init(url: url)
         player = AVPlayer.init(playerItem:playerItem)
         currentPlayerLayer = AVPlayerLayer.init(player: player)
         currentPlayerLayer?.frame = XCGRect(0, 0, SCREEN_WIDTH, SCREEN_WIDTH*0.6)
-        currentPlayerLayer?.videoGravity = AVLayerVideoGravityResizeAspect
+        currentPlayerLayer?.videoGravity = AVLayerVideoGravity.resizeAspect
         
-        player?.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 1), queue: DispatchQueue.main, using: { (time) in
+        player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 1), queue: DispatchQueue.main, using: { (time) in
             debugPrint("---addObserver---\(time)")
             
         })
@@ -64,7 +64,7 @@ class AVPlayerViewController: UIViewController {
         debugPrint("---keyPath---\(String(describing: keyPath)))")
         
         if keyPath == "status" {
-            let status:AVPlayerItemStatus = (playerItem?.status)!
+            let status:AVPlayerItem.Status = (playerItem?.status)!
             
             switch status {
             case .readyToPlay:

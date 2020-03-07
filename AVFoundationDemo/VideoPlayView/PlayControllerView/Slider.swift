@@ -144,7 +144,7 @@ class Slider: UIControl {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setThumbImage(thumbImage:UIImage,state:UIControlState) -> Void {
+    func setThumbImage(thumbImage:UIImage,state:UIControl.State) -> Void {
         
         if (state == .normal) {
             self.thumbImageView.image = thumbImage;

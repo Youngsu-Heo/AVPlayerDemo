@@ -166,7 +166,7 @@ class VideoPlayer:NSObject,DownloadManagerDelegate {
     
     private func addObserver() -> Void {
         
-        self.timeObserve = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 1), queue: DispatchQueue.main, using: { [weak self](time) in
+        self.timeObserve = self.player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 1), queue: DispatchQueue.main, using: { [weak self](time) in
 //            debugPrint("---addObserver---")
             let current = CMTimeGetSeconds(time);
             let total = CMTimeGetSeconds((self?.currentPlayerItem?.duration)!);
@@ -210,9 +210,9 @@ class VideoPlayer:NSObject,DownloadManagerDelegate {
         self.isCanToGetLocalTime = true;
         self.loadedTimeRangeArr.removeAll()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterBackground), name: NSNotification.Name.UIApplication.didEnterBackgroundNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(appDidEnterForeground), name: NSNotification.Name.UIApplication.willEnterForegroundNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(playerItemDidPlayToEnd(_:)), name: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil)
     }
@@ -280,7 +280,7 @@ class VideoPlayer:NSObject,DownloadManagerDelegate {
         }
         self.isCanToGetLocalTime = true
         
-        self.player?.seek(to: CMTimeMake(Int64(time), 1), completionHandler: {[weak self] (finished) in
+        self.player?.seek(to: CMTimeMake(value: Int64(time), timescale: 1), completionHandler: {[weak self] (finished) in
             self?.play()
         })
         
@@ -341,7 +341,7 @@ class VideoPlayer:NSObject,DownloadManagerDelegate {
         let playerItem = object as? AVPlayerItem
         
         if keyPath == "status" {
-            let status:AVPlayerItemStatus = (playerItem?.status)!
+            let status:AVPlayerItem.Status = (playerItem?.status)!
 
             switch status {
                 case .readyToPlay:
